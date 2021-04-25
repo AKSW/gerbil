@@ -50,3 +50,11 @@ subTaskId int NOT NULL,
 PRIMARY KEY (taskId, subTaskId)
 );
 
+-- Rename wdaqua-core1 dataset
+UPDATE ExperimentTasks
+SET annotatorName = 'QAnswer (wikidata)'
+WHERE annotatorName = 'wdaqua-core1 (wikidata)';
+
+UPDATE ExperimentTasks
+SET annotatorName = 'QAnswer (DBpedia)'
+WHERE annotatorName = 'wdaqua-core1 (DBpedia)';

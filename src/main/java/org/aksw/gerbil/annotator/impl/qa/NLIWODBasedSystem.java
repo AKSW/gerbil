@@ -38,8 +38,8 @@ public class NLIWODBasedSystem extends AbstractAnnotator implements QASystem {
 	public static final String START_SYSTEM_NAME = "START";
 	public static final String YODA_SYSTEM_NAME = "YODA";
 	public static final String OKBQA_SYSTEM_NAME = "OKBQA";
-	public static final String QANARY_SYSTEM_WIKIDATA_NAME = "wdaqua-core1 (wikidata)";
-	public static final String QANARY_SYSTEM_DBPEDIA_NAME = "wdaqua-core1 (DBpedia)";
+	public static final String QANARY_SYSTEM_WIKIDATA_NAME = "QAnswer (wikidata)";
+	public static final String QANARY_SYSTEM_DBPEDIA_NAME = "QAnswer (DBpedia)";
 	public static final String GANSWER2_SYSTEM_NAME = "gAnswer2";
 	public static final String QUEPY = "QUEPY";
 	private static final int DEFAULT_WAITING_TIME = 60000;
