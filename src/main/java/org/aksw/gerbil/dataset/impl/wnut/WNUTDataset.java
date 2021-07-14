@@ -14,19 +14,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with General Entity Annotator Benchmark.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.aksw.gerbil.dataset.impl.umbc;
+package org.aksw.gerbil.dataset.impl.wnut;
 
 import org.aksw.gerbil.dataset.impl.conll.CoNLLTypeRetriever;
 import org.aksw.gerbil.dataset.impl.conll.GenericCoNLLDataset;
 
-public class UMBCDataset extends GenericCoNLLDataset {
+/**
+ * Dataset Adapter for WNUT2017
+ */
+public class WNUTDataset extends GenericCoNLLDataset {
 
     private static final int ANNOTATION_COLUMN = 1;
     private static final int URI_COLUMN = -1;
-    private static final CoNLLTypeRetriever TYPE_TAGS = new CoNLLTypeRetriever("LOC", null, null, null,
-        null, "PER", null, null, null, "ORG");
+    private static final CoNLLTypeRetriever TYPE_TAGS = new CoNLLTypeRetriever("location", "corporation", null, null,
+        null, "person", "product", null, null, null);
 
-    public UMBCDataset(String file) {
+    public WNUTDataset(String file) {
         super(file, ANNOTATION_COLUMN, URI_COLUMN, TYPE_TAGS);
+        TYPE_TAGS.addTypeURI("creative-work", "http://dbpedia.org/ontology/Work");
+        TYPE_TAGS.addTypeURI("group", "http://dbpedia.org/ontology/Group");
     }
 }

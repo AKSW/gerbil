@@ -1,5 +1,22 @@
+/**
+ * This file is part of General Entity Annotator Benchmark.
+ *
+ * General Entity Annotator Benchmark is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * General Entity Annotator Benchmark is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with General Entity Annotator Benchmark.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.aksw.gerbil.dataset.impl.derczynski;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,19 +49,21 @@ public class DerczynskiDatasetTest {
 
     public DerczynskiDatasetTest(String text, String tweet, String expectedToken) {
         this.text = text;
-        this.tweet=tweet;
+        this.tweet = tweet;
         this.expectedToken = expectedToken;
     }
 
     @Test
-    public void test() {
-        List<Marking> markings = DerczynskiDataset.findMarkings(text);
+    public void test() throws IOException {
+        DerczynskiDataset derczynski = new DerczynskiDataset("");
+        List<Marking> markings = derczynski.findMarkings(text);
         Assert.assertNotNull(markings);
         Assert.assertTrue(markings.size() > 0);
         Assert.assertTrue(markings.get(0) instanceof NamedEntity);
         NamedEntity ne = (NamedEntity) markings.get(0);
         String mention = tweet.substring(ne.getStartPosition(), ne.getStartPosition() + ne.getLength());
         Assert.assertEquals(expectedToken, mention);
+        derczynski.close();
     }
 
 }
