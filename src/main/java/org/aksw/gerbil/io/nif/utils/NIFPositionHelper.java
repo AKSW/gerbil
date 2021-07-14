@@ -18,6 +18,7 @@ package org.aksw.gerbil.io.nif.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.aksw.gerbil.transfer.nif.Document;
@@ -60,25 +61,32 @@ public class NIFPositionHelper {
             currentAnnotation = annotationsSortedByEnd.get(i);
             endPositions[i] = currentAnnotation.getStartPosition() + currentAnnotation.getLength();
         }
+
         String text = document.getText();
-        // FIXME this method can be implement in a more performant way by using
-        // the methods text.codePoints() and
-        // StringBuilder#appendCodePoint(codePoint)
-        int codePointsCount = 0;
-        int posInStart = 0, posInEnd = 0;
-        for (int i = 0; i < text.length(); ++i) {
-            codePointsCount = text.codePointCount(0, i + 1);
+        StringBuilder reBuiltText = new StringBuilder(text.length());
+        Iterator<Integer> codePointsIterator = text.codePoints().iterator();
+        int posInStart = 0; 
+        int posInEnd = 0;
+        int codePointsCount = 1;
+        while(codePointsIterator.hasNext()) {
+            reBuiltText.appendCodePoint(codePointsIterator.next());
             while ((posInStart < startPositions.length) && (codePointsCount > startPositions[posInStart])) {
-                spans.get(posInStart).setStartPosition(i);
+                spans.get(posInStart).setStartPosition(reBuiltText.length()-1);
                 ++posInStart;
             }
             while ((posInEnd < endPositions.length) && (codePointsCount > endPositions[posInEnd])) {
                 currentAnnotation = annotationsSortedByEnd.get(posInEnd);
-                currentAnnotation.setLength(i - currentAnnotation.getStartPosition());
+                currentAnnotation.setLength(reBuiltText.length() - 1 - currentAnnotation.getStartPosition());
                 ++posInEnd;
             }
+            ++codePointsCount;
         }
-
+        // if text ends in marking(s), correct the position of those
+        while (posInEnd < endPositions.length) {
+            currentAnnotation = annotationsSortedByEnd.get(posInEnd);
+            currentAnnotation.setLength(reBuiltText.length() - currentAnnotation.getStartPosition());
+            ++posInEnd;
+        }
         checkPositionsForConspicuity(annotationsSortedByEnd, text);
     }
 
